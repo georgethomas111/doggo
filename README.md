@@ -6,5 +6,5 @@ This uses https://github.com/google/gopacket to do the implementation.
 
 # Components 
 
-HTTPDecoder - decodes HTTP data from an os interface that is passed.
-systeminterface - This is the package that interacts with the interfaces.
+* HTTPDecoder - decodes HTTP data from an os interface that is passed.
+* systeminterface - This is the package that interacts with the system network interfaces.
