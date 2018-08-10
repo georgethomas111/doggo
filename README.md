@@ -16,6 +16,7 @@ Idea is to have the ability to understand the protocol data better to figure out
 # TODO
 
 * Use statsd to dump the data about different layers into it. 
+    * tcp packet type check
 
 * Use the interfaces package to get an interface and dump some bytes from it.
    * Create a socket and bind the interface we found earlier.
