@@ -9,8 +9,10 @@ import (
 type testStatsClient struct {
 }
 
-func (t *testStatsClient) Receive(d interface{}) {
-	fmt.Println(d)
+func (t *testStatsClient) Receive(d map[string]int) {
+	for key, count := range d {
+		fmt.Println(key, count)
+	}
 }
 
 func TestMetric(t *testing.T) {
@@ -22,5 +24,5 @@ func TestMetric(t *testing.T) {
 	}
 
 	time.Sleep(10 * time.Second)
-	m.Trigger()
+	m.Close()
 }

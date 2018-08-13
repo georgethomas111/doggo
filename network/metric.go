@@ -11,9 +11,9 @@ import (
 // Metric is a struct which listens for a heartBeat and sends the information
 // collected till now to the st
 type Metric struct {
-	Sc     stats.Client
-	Ps     *gopacket.PacketSource
-	pInfos []*info
+	Sc stats.Client
+	Ps *gopacket.PacketSource
+	h  *pcap.Handle
 }
 
 // New intitializes metric capture with an interface name and the stats client
@@ -29,6 +29,7 @@ func New(iName string, c stats.Client) (*Metric, error) {
 	m := &Metric{
 		Sc: c,
 		Ps: packetSource,
+		h:  handle,
 	}
 
 	go m.PacketSource()
@@ -38,14 +39,10 @@ func New(iName string, c stats.Client) (*Metric, error) {
 func (m *Metric) PacketSource() {
 	for p := range m.Ps.Packets() {
 		info := packetInfo(p)
-		m.pInfos = append(m.pInfos, info)
+		m.Sc.Receive(info.pMap)
 	}
 }
 
-func (m *Metric) Trigger() {
-	m.Sc.Receive(m.pInfos)
-	m.Reset()
-}
-
-func (m *Metric) Reset() {
+func (m *Metric) Close() {
+	m.h.Close()
 }
