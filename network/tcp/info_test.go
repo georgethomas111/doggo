@@ -1,6 +1,7 @@
 package tcp
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/google/gopacket"
@@ -13,18 +14,16 @@ func TestPacketInfo(t *testing.T) {
 		expInfo *info
 	}{
 		{
-			gopacket.NewPacket([]byte{}, layers.LinkTypeEthernet, gopacket.Default),
+			gopacket.NewPacket([]byte{}, layers.LinkTypeEthernet, gopacket.DecodeOptions{Lazy: true}),
 			&info{
-				pMap: map[string]int{
-					"Ethernet": 1,
-				},
+				pMap: make(map[string]int),
 			},
 		},
 	}
 
 	for _, tc := range tests {
 		i := packetInfo(tc.packet)
-		if i != tc.expInfo {
+		if !reflect.DeepEqual(i, tc.expInfo) {
 			t.Errorf("Expected %v, got %v.", tc.expInfo, i)
 		}
 	}
