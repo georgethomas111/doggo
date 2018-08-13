@@ -1,7 +1,7 @@
 package network
 
 import (
-	"log"
+	"fmt"
 	"testing"
 	"time"
 )
@@ -10,7 +10,7 @@ type testStatsClient struct {
 }
 
 func (t *testStatsClient) Receive(d interface{}) {
-	log.Println(d)
+	fmt.Println(d)
 }
 
 func TestMetric(t *testing.T) {
@@ -20,6 +20,7 @@ func TestMetric(t *testing.T) {
 		t.Errorf("error while creating metric %s", err.Error())
 		return
 	}
-	time.Sleep(time.Second)
+
+	time.Sleep(10 * time.Second)
 	m.Trigger()
 }

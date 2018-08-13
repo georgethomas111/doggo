@@ -1,7 +1,6 @@
 package network
 
 import (
-	"sync"
 	"time"
 
 	"github.com/georgethomas111/doggohttp/stats"
@@ -12,9 +11,9 @@ import (
 // Metric is a struct which listens for a heartBeat and sends the information
 // collected till now to the st
 type Metric struct {
-	L  sync.Mutex
-	Sc stats.Client
-	Ps *gopacket.PacketSource
+	Sc     stats.Client
+	Ps     *gopacket.PacketSource
+	pInfos []*info
 }
 
 // New intitializes metric capture with an interface name and the stats client
@@ -27,24 +26,25 @@ func New(iName string, c stats.Client) (*Metric, error) {
 
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 
-	return &Metric{
+	m := &Metric{
 		Sc: c,
 		Ps: packetSource,
-	}, nil
+	}
+
+	go m.PacketSource()
+	return m, nil
 }
 
 func (m *Metric) PacketSource() {
 	for p := range m.Ps.Packets() {
-		packetInfo(p)
+		info := packetInfo(p)
+		m.pInfos = append(m.pInfos, info)
 	}
 }
 
 func (m *Metric) Trigger() {
-	m.L.Lock()
-	m.Sc.Receive(m)
+	m.Sc.Receive(m.pInfos)
 	m.Reset()
-
-	m.L.Unlock()
 }
 
 func (m *Metric) Reset() {
