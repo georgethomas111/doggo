@@ -16,7 +16,7 @@ func TestPacketInfo(t *testing.T) {
 		{
 			gopacket.NewPacket([]byte{}, layers.LinkTypeEthernet, gopacket.DecodeOptions{Lazy: true}),
 			&info{
-				pMap: make(map[string]int),
+				layerInfo: make(map[string]bool),
 			},
 		},
 	}

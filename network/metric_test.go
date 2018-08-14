@@ -4,15 +4,18 @@ import (
 	"fmt"
 	"testing"
 	"time"
+
+	"github.com/georgethomas111/doggohttp/stats"
 )
 
 type testStatsClient struct {
 }
 
-func (t *testStatsClient) Receive(d map[string]int) {
-	for key, count := range d {
-		fmt.Println(key, count)
+func (t *testStatsClient) Receive(s stats.PacketStats) {
+	for key, _ := range s.LayerInfo() {
+		fmt.Println(key)
 	}
+	fmt.Println()
 }
 
 func TestMetric(t *testing.T) {

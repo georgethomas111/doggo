@@ -39,7 +39,7 @@ func New(iName string, c stats.Client) (*Metric, error) {
 func (m *Metric) PacketSource() {
 	for p := range m.Ps.Packets() {
 		info := packetInfo(p)
-		m.Sc.Receive(info.pMap)
+		m.Sc.Receive(info)
 	}
 }
 

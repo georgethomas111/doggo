@@ -1,5 +1,5 @@
 package stats
 
 type Client interface {
-	Receive(map[string]int)
+	Receive(PacketStats)
 }
