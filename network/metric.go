@@ -3,7 +3,7 @@ package network
 import (
 	"time"
 
-	"github.com/georgethomas111/doggohttp/stats"
+	"github.com/georgethomas111/doggo/stats"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
 )

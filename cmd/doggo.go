@@ -8,8 +8,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/georgethomas111/doggohttp/network"
-	"github.com/georgethomas111/doggohttp/stats/plot"
+	"github.com/georgethomas111/doggo/network"
+	"github.com/georgethomas111/doggo/stats/plot"
 )
 
 func handleLS() {

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/georgethomas111/doggohttp/stats"
+	"github.com/georgethomas111/doggo/stats"
 )
 
 type testStatsClient struct {

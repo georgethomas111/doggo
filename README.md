@@ -10,17 +10,30 @@ Idea is to have the ability to understand the protocol data better to figure out
 
 # Steps to Run
 
- Assuming your go environment is all setup. Just do.
+ Assuming your go environment is all setup.
 
 ```
 $ go get github.com/georgethomas111/doggo
 $ cd $WORKSPACE/github.com/georgethomas111/doggo
-$ go run cmd/doggo.go
+$ go build cmd/doggo.go
 ```
 
- To get a detailed list of options, use.
+ Usage options can be obtained by
+
 ```
-$ go run cmd/doggo.go -help
+$ ./doggo -help
+```
+
+ Help options
+
+```
+Usage of ./doggo:
+  -interface string
+        The interface to sniff. (default "wlan0")
+  -ls
+        List interfaces
+  -port string
+        Port to listen for web requests. eg :8080 (default ":8080")
 ```
 
  To list available interfaces to listen on.
@@ -36,6 +49,36 @@ wlan0
 arcbr0
 veth_android
 ```
+
+ To listen on wlan0 network interface.
+
+```
+$ sudo ./doggo
+```
+ sudo is required as the interface requires root permissions to read from. The graphs can be viewed by opening a browser and going to  
+ http://localhost:8080
+
+ Sample output
+```
+Waiting for interrupt
+^CReceived interrupt. Bye use me again.
+```
+
+![screenshot 2018-08-16 at 11 44 39 am](https://user-images.githubusercontent.com/778330/44228294-d26f6380-a149-11e8-8930-f066ac89f98b.png)
+
+
+ To listen on a different interface veth_andoid and to view the results 
+```
+$ sudo ./doggo -interface veth_android
+
+```
+ To change the port the web server is listening to use the following 
+```
+$ sudo ./doggo -interface veth_android -port :8081
+
+```
+ This will make sure the webpage is available at http://localhost:8081
+
 
 # Components 
 
