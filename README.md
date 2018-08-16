@@ -12,7 +12,7 @@ Idea is to have the ability to understand the protocol data better to figure out
 
 * network - This is the package that interacts with the system network interfaces.
           - The stats client is called which handles the data.
-* stats - 
+* stats 
 
 # Future work
 
