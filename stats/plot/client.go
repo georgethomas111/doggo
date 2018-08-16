@@ -15,7 +15,7 @@ type Client struct {
 	l         *Line
 }
 
-func New() *Client {
+func New(port string) *Client {
 	l := &Line{
 		XName:  "Time",
 		YName:  "Percent",
@@ -27,7 +27,7 @@ func New() *Client {
 		l: l,
 	}
 
-	go c.Listen(":8080")
+	go c.Listen(port)
 	return c
 }
 
@@ -36,6 +36,9 @@ func (c *Client) Receive(ps stats.PacketStats) {
 }
 
 func (c *Client) plotTCP(tcp *layers.TCP) {
+	if tcp == nil {
+		return
+	}
 	c.packCount++
 	timestamp := time.Now()
 	if tcp.ACK {

@@ -52,7 +52,7 @@ func TestClient(t *testing.T) {
 
 	ps := new(mockPacketStats)
 
-	plotCli := New()
+	plotCli := New(":8080")
 	for i := 1; i < 60*60; i++ {
 		time.Sleep(1 * time.Second)
 		ps.tcp = tcpSyn
