@@ -5,3 +5,4 @@ before_install:
 
 language: go 
 
+script: sudo -E env "PATH=$PATH" go test -v ./...
