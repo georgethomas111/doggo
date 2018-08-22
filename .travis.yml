@@ -4,4 +4,3 @@ install: sudo apt-get install libpcap-dev
 
 language: go 
 
-script: sudo go test -v ./...
