@@ -31,7 +31,7 @@ func New(port string) *Client {
 	return c
 }
 
-func (c *Client) Receive(ps stats.PacketStats) {
+func (c *Client) Receive(ps stats.Packet) {
 	c.plotTCP(ps.TCP())
 }
 

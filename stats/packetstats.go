@@ -2,7 +2,7 @@ package stats
 
 import "github.com/google/gopacket/layers"
 
-type PacketStats interface {
+type Packet interface {
 	LayerInfo() map[string]bool
 	Eth() *layers.Ethernet
 	IPv4() *layers.IPv4
