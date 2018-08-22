@@ -1,5 +1,7 @@
 sudo: required
 
-install: apt-get install libpcap-dev
+install: sudo apt-get install libpcap-dev
 
 language: go 
+
+script: sudo go test -v ./...
