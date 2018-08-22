@@ -1,3 +1,2 @@
 sudo: required
-langugage: go 
-script: go get github.com/georgethomas111/doggo && go test ./...
+language: go 
