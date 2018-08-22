@@ -14,7 +14,7 @@ func (t *testStatsClient) Receive(s stats.PacketStats) {
 
 func TestNetwork(t *testing.T) {
 	// create a stats client that can be used.
-	_, err := New("", &testStatsClient{})
+	_, err := New("", []stats.Client{&testStatsClient{}})
 	if err != nil {
 		return
 	}
@@ -32,7 +32,7 @@ func TestNetworkWithInterface(t *testing.T) {
 		t.Errorf("At least one interface required for testing.")
 	}
 
-	_, err = New(interfaces[0], &testStatsClient{})
+	_, err = New(interfaces[0], []stats.Client{&testStatsClient{}})
 	if err != nil {
 		t.Errorf("Could not listen to %v, got error %v", interfaces[0], err.Error())
 	}
