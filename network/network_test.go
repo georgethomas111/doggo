@@ -9,7 +9,7 @@ import (
 type testStatsClient struct {
 }
 
-func (t *testStatsClient) Receive(s stats.PacketStats) {
+func (t *testStatsClient) Receive(s stats.Packet) {
 }
 
 func TestNetwork(t *testing.T) {
