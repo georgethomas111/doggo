@@ -1,2 +1,5 @@
 sudo: required
+
+install: apt-get install libpcap-dev
+
 language: go 
