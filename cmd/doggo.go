@@ -42,7 +42,7 @@ func handleSniff(intName string, portStr string) error {
 }
 
 func main() {
-	var intName = flag.String("interface", "wlan0", "The interface to sniff.")
+	var intName = flag.String("interface", "wlan0", "The network interface to sniff.")
 	var ls = flag.Bool("ls", false, "List interfaces")
 	var port = flag.String("port", ":8080", "Port to listen for web requests. eg :8080")
 
