@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"github.com/georgethomas111/doggo/network"
+	"github.com/georgethomas111/doggo/stats"
 	"github.com/georgethomas111/doggo/stats/plot"
 )
 
@@ -25,9 +26,13 @@ func handleLS() {
 	return
 }
 
-func handleSniff(intName string, portStr string) error {
+func services(portStr string) []stats.Client {
 	c := plot.New(portStr)
-	n, err := network.New(intName, c)
+	return []stats.Client{c}
+}
+
+func handleSniff(intName string, portStr string) error {
+	n, err := network.New(intName, services(portStr))
 	if err != nil {
 		return err
 	}
