@@ -8,9 +8,9 @@ import (
 	"github.com/google/gopacket/pcap"
 )
 
-// Metric is a struct which listens for a heartBeat and sends the information
-// collected till now to the st
-type Metric struct {
+// Network registers a client which takes appropriate action when a packet is
+// received from it.
+type Network struct {
 	Sc stats.Client
 	Ps *gopacket.PacketSource
 	h  *pcap.Handle
@@ -18,7 +18,7 @@ type Metric struct {
 
 // New intitializes metric capture with an interface name and the stats client
 // which receives the name.
-func New(iName string, c stats.Client) (*Metric, error) {
+func New(iName string, c stats.Client) (*Network, error) {
 	handle, err := pcap.OpenLive(iName, int32(65535), false, -1*time.Second)
 	if err != nil {
 		return nil, err
@@ -26,23 +26,23 @@ func New(iName string, c stats.Client) (*Metric, error) {
 
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 
-	m := &Metric{
+	n := &Network{
 		Sc: c,
 		Ps: packetSource,
 		h:  handle,
 	}
 
-	go m.PacketSource()
-	return m, nil
+	go n.PacketSource()
+	return n, nil
 }
 
-func (m *Metric) PacketSource() {
-	for p := range m.Ps.Packets() {
+func (n *Network) PacketSource() {
+	for p := range n.Ps.Packets() {
 		info := packetInfo(p)
-		m.Sc.Receive(info)
+		n.Sc.Receive(info)
 	}
 }
 
-func (m *Metric) Close() {
-	m.h.Close()
+func (n *Network) Close() {
+	n.h.Close()
 }
