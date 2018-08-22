@@ -16,10 +16,10 @@ func (t *TApp) Trigger() {
 func TestHeartBeat(t *testing.T) {
 	tApp := new(TApp)
 
-	New(time.Second, []Application{tApp})
-	ti := time.NewTimer(2 * time.Second)
+	New(time.Millisecond, []Application{tApp})
+	ti := time.NewTimer(2 * time.Millisecond)
 	<-ti.C
 	if tApp.TestData != "abcd" {
-		t.Errorf("Trigger not called in %v.", time.Second)
+		t.Errorf("Trigger not called in %v.", time.Millisecond)
 	}
 }
