@@ -9,8 +9,8 @@ import (
 	"syscall"
 
 	"github.com/georgethomas111/doggo/network"
+	"github.com/georgethomas111/doggo/service/plot"
 	"github.com/georgethomas111/doggo/stats"
-	"github.com/georgethomas111/doggo/stats/plot"
 )
 
 func handleLS() {
