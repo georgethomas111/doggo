@@ -4,7 +4,7 @@ import "github.com/georgethomas111/doggo/stats"
 
 type Bee struct {
 	db DB
-	p  *TCPPercent
+	p  TCPPercent
 }
 
 func New(db DB) *Bee {
