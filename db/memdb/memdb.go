@@ -1,6 +1,9 @@
 package memdb
 
-import "time"
+import (
+	"sync"
+	"time"
+)
 
 type dbObj struct {
 	Timestamp int64       `json:"timestamp"`
@@ -8,6 +11,7 @@ type dbObj struct {
 }
 
 type MemDB struct {
+	sync.Mutex
 	DBObjs []dbObj
 }
 
@@ -22,4 +26,14 @@ func (m *MemDB) Write(obj interface{}) {
 	}
 
 	m.DBObjs = append(m.DBObjs, o)
+}
+
+func (m *MemDB) Query(sTime int64, eTime int64) []interface{} {
+	var res []interface{}
+	for _, obj := range m.DBObjs {
+		if sTime <= obj.Timestamp && obj.Timestamp <= eTime {
+			res = append(res, obj)
+		}
+	}
+	return res
 }
