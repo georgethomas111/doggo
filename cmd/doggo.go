@@ -7,8 +7,12 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
+	"github.com/georgethomas111/doggo/db/memdb"
+	"github.com/georgethomas111/doggo/heartbeat"
 	"github.com/georgethomas111/doggo/network"
+	"github.com/georgethomas111/doggo/service/bee"
 	"github.com/georgethomas111/doggo/service/plot"
 	"github.com/georgethomas111/doggo/stats"
 )
@@ -26,13 +30,16 @@ func handleLS() {
 	return
 }
 
-func services(portStr string) []stats.Client {
+func services(portStr string, db bee.DB, hb int) []stats.Client {
 	c := plot.New(portStr)
-	return []stats.Client{c}
+	b := bee.New(db)
+	heartbeat.New(time.Millisecond*time.Duration(hb), []heartbeat.Application{b})
+
+	return []stats.Client{c, b}
 }
 
-func handleSniff(intName string, portStr string) error {
-	n, err := network.New(intName, services(portStr))
+func handleSniff(intName string, portStr string, db bee.DB, hb int) error {
+	n, err := network.New(intName, services(portStr, db, hb))
 	if err != nil {
 		return err
 	}
@@ -50,6 +57,8 @@ func main() {
 	var intName = flag.String("interface", "wlan0", "The network interface to sniff.")
 	var ls = flag.Bool("ls", false, "List interfaces")
 	var port = flag.String("port", ":8080", "Port to listen for web requests. eg :8080")
+	var heartbeat = flag.Int("heartbeat", 1000, "The sampling heartbeat in ms")
+	//	var jPort = flag.String("jport", ":8081", "Port to listen for api web requests. eg :8081")
 
 	flag.Parse()
 
@@ -58,7 +67,7 @@ func main() {
 		return
 	}
 
-	err := handleSniff(*intName, *port)
+	err := handleSniff(*intName, *port, memdb.New(), *heartbeat)
 	if err != nil {
 		log.Println("Sniff error ", err.Error())
 		return
