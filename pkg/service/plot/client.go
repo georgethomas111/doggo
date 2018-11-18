@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/georgethomas111/doggo/stats"
+	"github.com/georgethomas111/doggo/pkg/stats"
 	"github.com/google/gopacket/layers"
 	chart "github.com/wcharczuk/go-chart"
 )
