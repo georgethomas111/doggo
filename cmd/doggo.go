@@ -4,12 +4,14 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"os"
-	"os/signal"
-	"syscall"
+	"time"
 
+	"github.com/georgethomas111/doggo/api"
+	"github.com/georgethomas111/doggo/db/memdb"
+	"github.com/georgethomas111/doggo/heartbeat"
 	"github.com/georgethomas111/doggo/network"
-	"github.com/georgethomas111/doggo/service/plot"
+	"github.com/georgethomas111/doggo/service"
+	"github.com/georgethomas111/doggo/service/bee"
 	"github.com/georgethomas111/doggo/stats"
 )
 
@@ -26,30 +28,37 @@ func handleLS() {
 	return
 }
 
-func services(portStr string) []stats.Client {
-	c := plot.New(portStr)
-	return []stats.Client{c}
+func services(portStr string, db bee.DB, hb int, s *service.Stop) []stats.Client {
+	//	c := plot.New(portStr)
+	b := bee.New(db)
+	h := heartbeat.New(time.Millisecond*time.Duration(hb), []heartbeat.Application{b})
+	s.Add(h)
+
+	return []stats.Client{b}
 }
 
-func handleSniff(intName string, portStr string) error {
-	n, err := network.New(intName, services(portStr))
+func waitForStop() {
+
+}
+
+func addTowaitForStop(apps []interface{ Close() }) {
+}
+
+func handleSniff(intName string, portStr string, db bee.DB, hb int, s *service.Stop) error {
+	n, err := network.New(intName, services(portStr, db, hb, s))
 	if err != nil {
 		return err
 	}
-	stop := make(chan os.Signal)
-	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
-
-	fmt.Println("Waiting for interrupt")
-	<-stop
-	n.Close()
-	fmt.Println("Received interrupt. Bye use me again.")
+	s.Add(n)
 	return nil
 }
 
 func main() {
 	var intName = flag.String("interface", "wlan0", "The network interface to sniff.")
 	var ls = flag.Bool("ls", false, "List interfaces")
-	var port = flag.String("port", ":8080", "Port to listen for web requests. eg :8080")
+	var port = flag.String("port", ":8080", "Port to look at the UI.")
+	var jPort = flag.String("jport", ":9000", "Port to listen for api web requests.")
+	var heartbeat = flag.Int("heartbeat", 1000, "The sampling heartbeat in ms")
 
 	flag.Parse()
 
@@ -58,10 +67,18 @@ func main() {
 		return
 	}
 
-	err := handleSniff(*intName, *port)
+	stop := &service.Stop{}
+	db := memdb.New()
+
+	err := handleSniff(*intName, *port, db, *heartbeat, stop)
 	if err != nil {
 		log.Println("Sniff error ", err.Error())
 		return
 	}
+
+	// This will wait to receive api requests.
+	api := api.New(*jPort, db)
+	stop.Add(api)
+	stop.Wait()
 
 }
