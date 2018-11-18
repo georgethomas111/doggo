@@ -6,13 +6,13 @@ import (
 	"log"
 	"time"
 
-	"github.com/georgethomas111/doggo/api"
-	"github.com/georgethomas111/doggo/db/memdb"
-	"github.com/georgethomas111/doggo/heartbeat"
-	"github.com/georgethomas111/doggo/network"
-	"github.com/georgethomas111/doggo/service"
-	"github.com/georgethomas111/doggo/service/bee"
-	"github.com/georgethomas111/doggo/stats"
+	"github.com/georgethomas111/doggo/pkg/api"
+	"github.com/georgethomas111/doggo/pkg/db/memdb"
+	"github.com/georgethomas111/doggo/pkg/heartbeat"
+	"github.com/georgethomas111/doggo/pkg/network"
+	"github.com/georgethomas111/doggo/pkg/service"
+	"github.com/georgethomas111/doggo/pkg/service/bee"
+	"github.com/georgethomas111/doggo/pkg/stats"
 )
 
 func handleLS() {

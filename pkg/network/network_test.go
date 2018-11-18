@@ -3,7 +3,7 @@ package network
 import (
 	"testing"
 
-	"github.com/georgethomas111/doggo/stats"
+	"github.com/georgethomas111/doggo/pkg/stats"
 )
 
 type testStatsClient struct {

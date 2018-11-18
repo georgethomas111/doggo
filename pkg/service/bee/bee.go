@@ -1,6 +1,6 @@
 package bee
 
-import "github.com/georgethomas111/doggo/stats"
+import "github.com/georgethomas111/doggo/pkg/stats"
 
 type Bee struct {
 	db DB
